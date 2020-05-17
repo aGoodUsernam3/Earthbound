@@ -523,69 +523,72 @@ public class EarthboundScript : MonoBehaviour
 			yield return "sendtochat Current Bomb Time: " + BombTime;
 		}
 		
-		if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && Regex.IsMatch(parameters[2], @"^\s*at\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+		if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && parameters.Length == 4)
 		{
-			yield return null;
-			string[] timer = parameters[3].Split(':');
-			if (parameters.Length != 4)
+			if (Regex.IsMatch(parameters[2], @"^\s*at\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
 			{
-				yield return "sendtochaterror Invalid parameter length.";
-				yield break;
-			}
-			
-			if (!Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-			{
-				yield return "sendtochaterror Invalid button being pressed.";
-				yield break;
-			}
-			
-			foreach (string a in timer)
-			{
-				foreach (char b in a)
+				yield return null;
+				string[] timer = parameters[3].Split(':');
+				if (parameters.Length != 4)
 				{
-					if(!b.ToString().EqualsAny(ValidNumbers))
+					yield return "sendtochaterror Invalid parameter length.";
+					yield break;
+				}
+				
+				if (!Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+				{
+					yield return "sendtochaterror Invalid button being pressed.";
+					yield break;
+				}
+				
+				foreach (string a in timer)
+				{
+					foreach (char b in a)
 					{
-						yield return "sendtochaterror Time given contains a character which is not a number.";
-						yield break;
+						if(!b.ToString().EqualsAny(ValidNumbers))
+						{
+							yield return "sendtochaterror Time given contains a character which is not a number.";
+							yield break;
+						}
 					}
 				}
-			}
-			
-			if (timer.Length != 2)
-			{
-				yield return "sendtochaterror Invalid time length.";
-				yield break;
-			}
-			
-			if (!timer[1].EqualsAny(SecondsAndMinutes) || timer[0].Length < 2 || (timer[0].Length > 2 && timer[0][0] == '0'))
-			{
-				yield return "sendtochaterror Invalid time format.";
-				yield break;
-			}
-			
-			while (bomb.GetFormattedTime() != parameters[3])
-			{
-				yield return "trycancel The command was cancelled due to a cancel request.";
-			}
-			
-			if (Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-			{
-				bashButton.OnInteract();
-			}
-			
-			else if (Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-			{
-				defendButton.OnInteract();
-			}
-			
-			else if (Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-			{
-				psiButton.OnInteract();
-			}
-			
-			else if (Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-			{
-				runButton.OnInteract();
+				
+				if (timer.Length != 2)
+				{
+					yield return "sendtochaterror Invalid time length.";
+					yield break;
+				}
+				
+				if (!timer[1].EqualsAny(SecondsAndMinutes) || timer[0].Length < 2 || (timer[0].Length > 2 && timer[0][0] == '0'))
+				{
+					yield return "sendtochaterror Invalid time format.";
+					yield break;
+				}
+				
+				while (bomb.GetFormattedTime() != parameters[3])
+				{
+					yield return "trycancel The command was cancelled due to a cancel request.";
+				}
+				
+				if (Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+				{
+					bashButton.OnInteract();
+				}
+				
+				else if (Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+				{
+					defendButton.OnInteract();
+				}
+				
+				else if (Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+				{
+					psiButton.OnInteract();
+				}
+				
+				else if (Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+				{
+					runButton.OnInteract();
+				}
 			}
 		}
 	}
