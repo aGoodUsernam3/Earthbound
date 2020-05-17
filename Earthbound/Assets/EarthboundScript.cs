@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using KModkit;
 
@@ -283,7 +284,7 @@ public class EarthboundScript : MonoBehaviour
 	void PressbashButton()
 	{
 		bashButton.AddInteractionPunch();
-      GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
+		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
 
 		if ((correctRange == 101200) && ((int)bomb.GetTime()) / 60 % 2 == 0)
 		{
@@ -339,7 +340,7 @@ public class EarthboundScript : MonoBehaviour
 	void PresspsiButton()
 	{
 		psiButton.AddInteractionPunch();
-      GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
+		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
 
 		if ((correctRange == 0100) && (((int)Math.Floor(bomb.GetTime()) % 10) == (Math.Abs(bomb.GetPortCount() - (bomb.GetOnIndicators().Count() + bomb.GetOffIndicators().Count()) * bomb.GetBatteryCount()) % 10)))
 		{
@@ -399,8 +400,7 @@ public class EarthboundScript : MonoBehaviour
 	void PressdefendButton()
 	{
 		defendButton.AddInteractionPunch();
-      GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-
+		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
 		if ((correctRange == 301400) && primes[((int)Math.Floor(bomb.GetTime()) % 60)] == true)
 		{
 			if (moduleSolved == false)
@@ -456,8 +456,7 @@ public class EarthboundScript : MonoBehaviour
 	void PressrunButton()
 	{
 		runButton.AddInteractionPunch();
-      GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-
+		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
 		if ((correctRange == 00) && (((int)Math.Floor(bomb.GetTime()) % 10) == ((Math.Abs(correctNumber) % 10))))
 		{
 			if (moduleSolved == false)
@@ -503,6 +502,90 @@ public class EarthboundScript : MonoBehaviour
 			Debug.LogFormat("[Earthbound #{0}] {1} got hurt and collapsed. ", moduleId, characterOptions[characterIndex].name);
 			Debug.LogFormat("[Earthbound #{0}] {1} lost the battle, module will now strike. ", moduleId, characterOptions[characterIndex].name);
 			audio.PlaySoundAtTransform("Strike", transform);
+			}
+		}
+	}
+	
+	//twitch plays
+    #pragma warning disable 414
+	private readonly string TwitchHelpMessage = @"To determine the current time of the bomb, use the command !{0} bomb time | To press a button on the module, use the command !{0} [bash/defend/psi/run] at [TIME] | Note: Use the bomb's time format for submitting a time | Example: 00:00, 120:00";
+    #pragma warning restore 414
+	
+	string[] SecondsAndMinutes = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"};
+	string[] ValidNumbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+	
+	IEnumerator ProcessTwitchCommand(string command)
+	{
+		string[] parameters = command.Split(' ');
+		if (Regex.IsMatch(command, @"^\s*bomb time\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+		{
+			string BombTime = bomb.GetFormattedTime();
+			yield return "sendtochat Current Bomb Time: " + BombTime;
+		}
+		
+		if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && Regex.IsMatch(parameters[2], @"^\s*at\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+		{
+			yield return null;
+			string[] timer = parameters[3].Split(':');
+			if (parameters.Length != 4)
+			{
+				yield return "sendtochaterror Invalid parameter length.";
+				yield break;
+			}
+			
+			if (!Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+			{
+				yield return "sendtochaterror Invalid button being pressed.";
+				yield break;
+			}
+			
+			foreach (string a in timer)
+			{
+				foreach (char b in a)
+				{
+					if(!b.ToString().EqualsAny(ValidNumbers))
+					{
+						yield return "sendtochaterror Time given contains a character which is not a number.";
+						yield break;
+					}
+				}
+			}
+			
+			if (timer.Length != 2)
+			{
+				yield return "sendtochaterror Invalid time length.";
+				yield break;
+			}
+			
+			if (!timer[1].EqualsAny(SecondsAndMinutes) || timer[0].Length < 2 || (timer[0].Length > 2 && timer[0][0] == '0'))
+			{
+				yield return "sendtochaterror Invalid time format.";
+				yield break;
+			}
+			
+			while (bomb.GetFormattedTime() != parameters[3])
+			{
+				yield return "trycancel The command was cancelled due to a cancel request.";
+			}
+			
+			if (Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+			{
+				bashButton.OnInteract();
+			}
+			
+			else if (Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+			{
+				defendButton.OnInteract();
+			}
+			
+			else if (Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+			{
+				psiButton.OnInteract();
+			}
+			
+			else if (Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+			{
+				runButton.OnInteract();
 			}
 		}
 	}
