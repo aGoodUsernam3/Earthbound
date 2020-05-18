@@ -34,7 +34,7 @@ public class EarthboundScript : MonoBehaviour
 	private bool end;
 	private int correctRange;
 	private int damageDealt;
-
+	private static bool playSound = false;
 
 
 
@@ -61,11 +61,17 @@ public class EarthboundScript : MonoBehaviour
 
 	void FunnySound()
 	{
-		audio.PlaySoundAtTransform("StartUpSound", transform);
+		//Makes the sound to play on a single module per bomb.
+		if (!playSound)
+		{
+			playSound = true;
+			audio.PlaySoundAtTransform("StartUpSound", transform);
+		}
 	}
 
 	void Start()
 	{
+		playSound = false;
 			//if(characterPicked)
 			//{
 					PickCharacter();
@@ -508,88 +514,125 @@ public class EarthboundScript : MonoBehaviour
 	
 	//twitch plays
     #pragma warning disable 414
-	private readonly string TwitchHelpMessage = @"To determine the current time of the bomb, use the command !{0} bomb time | To press a button on the module, use the command !{0} [bash/defend/psi/run] at [TIME] | Note: Use the bomb's time format for submitting a time | Example: 00:00, 120:00";
+	private readonly string TwitchHelpMessage = @"Use !{0} press [bash/defend/psi/run] at [TIME] to use any move at a certain time. Valid times are # (last second digit), ## (two seconds digit), and #:XX (last minute digit). Timing of # and ## can be chained, but must has the same type. Use !{0} press [bash/defend/psi/run] to press any button at any time.";
     #pragma warning restore 414
-	
-	string[] SecondsAndMinutes = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"};
-	string[] ValidNumbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-	
+
 	IEnumerator ProcessTwitchCommand(string command)
 	{
-		string[] parameters = command.Split(' ');
-		if (Regex.IsMatch(command, @"^\s*bomb time\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+		command = command.ToLowerInvariant().Trim();
+		Match m = Regex.Match(command, @"^press (bash|defend|psi|run)(?: at(?:((?:\s+(?:[0-5]\d))+)|((?:\s+\d)+)|\s+(\d)\:xx))?$");
+		if (m.Success)
 		{
-			string BombTime = bomb.GetFormattedTime();
-			yield return "sendtochat Current Bomb Time: " + BombTime;
-		}
-		
-		if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && parameters.Length == 4)
-		{
-			if (Regex.IsMatch(parameters[2], @"^\s*at\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+			HashSet<int> timesToPress = new HashSet<int>();
+			bool singleDigit = m.Groups[3].Success;
+			bool isMinute = m.Groups[4].Success;
+			bool isSecond = m.Groups[2].Success;
+			string[] seconds;
+			int groupIndex = 0;
+			if (isMinute)
+				groupIndex = 4;
+			else if (singleDigit)
+				groupIndex = 3;
+			else if (isSecond)
+				groupIndex = 2;
+			if (groupIndex != 0)
 			{
-				yield return null;
-				string[] timer = parameters[3].Split(':');
-				if (parameters.Length != 4)
-				{
-					yield return "sendtochaterror Invalid parameter length.";
-					yield break;
-				}
-				
-				if (!Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) && !Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-				{
-					yield return "sendtochaterror Invalid button being pressed.";
-					yield break;
-				}
-				
-				foreach (string a in timer)
-				{
-					foreach (char b in a)
-					{
-						if(!b.ToString().EqualsAny(ValidNumbers))
-						{
-							yield return "sendtochaterror Time given contains a character which is not a number.";
-							yield break;
-						}
-					}
-				}
-				
-				if (timer.Length != 2)
-				{
-					yield return "sendtochaterror Invalid time length.";
-					yield break;
-				}
-				
-				if (!timer[1].EqualsAny(SecondsAndMinutes) || timer[0].Length < 2 || (timer[0].Length > 2 && timer[0][0] == '0'))
-				{
-					yield return "sendtochaterror Invalid time format.";
-					yield break;
-				}
-				
-				while (bomb.GetFormattedTime() != parameters[3])
-				{
-					yield return "trycancel The command was cancelled due to a cancel request.";
-				}
-				
-				if (Regex.IsMatch(parameters[1], @"^\s*bash\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-				{
-					bashButton.OnInteract();
-				}
-				
-				else if (Regex.IsMatch(parameters[1], @"^\s*defend\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-				{
-					defendButton.OnInteract();
-				}
-				
-				else if (Regex.IsMatch(parameters[1], @"^\s*psi\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-				{
-					psiButton.OnInteract();
-				}
-				
-				else if (Regex.IsMatch(parameters[1], @"^\s*run\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
-				{
-					runButton.OnInteract();
-				}
+				seconds = m.Groups[groupIndex].Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+				foreach (string time in seconds)
+					timesToPress.Add(int.Parse(time));
 			}
+			yield return null;
+			Func<bool> timeCal = null;
+			if (isMinute)
+				timeCal = () => timesToPress.Contains(((int)(bomb.GetTime() / 60)) % 10);
+			else if (singleDigit)
+				timeCal = () => timesToPress.Contains(((int)bomb.GetTime()) % 10);
+			else if (isSecond)
+				timeCal = () => timesToPress.Contains(((int)bomb.GetTime()) % 60);
+			else
+				timeCal = () => true;
+			while (!timeCal())
+			{
+				yield return new WaitForSeconds(.1f);
+				yield return "trycancel";
+			}
+			switch (m.Groups[1].Value)
+			{
+				case "bash":
+					bashButton.OnInteract();
+					break;
+				case "defend":
+					defendButton.OnInteract();
+					break;
+				case "psi":
+					psiButton.OnInteract();
+					break;
+				case "run":
+					runButton.OnInteract();
+					break;
+			}
+			yield return new WaitForSeconds(.1f);
 		}
+		else
+			yield return "sendtochaterror Invalid command. Use !{1} help to see full commands.";
+		yield break;
+	}
+
+	IEnumerator TwitchHandleForcedSolve()
+    {
+		Func<bool> correctTime = null;
+		KMSelectable buttonToPress = null;
+		switch (correctRange)
+        {
+			case 0100:
+				correctTime = () => ((int)Math.Floor(bomb.GetTime()) % 10) == (Math.Abs(bomb.GetPortCount() - (bomb.GetOnIndicators().Count() + bomb.GetOffIndicators().Count()) * bomb.GetBatteryCount()) % 10);
+				buttonToPress = psiButton;
+				break;
+			case 101200:
+				correctTime = () => ((int)bomb.GetTime()) / 60 % 2 == 0;
+				buttonToPress = bashButton;
+				break;
+			case 201300:
+				correctTime = () => ((int)Math.Floor(bomb.GetTime()) / 60) % 2 == 1;
+				buttonToPress = runButton;
+				break;
+			case 301400:
+				correctTime = () => primes[((int)Math.Floor(bomb.GetTime()) % 60)];
+				buttonToPress = defendButton;
+				break;
+			case 401500:
+				correctTime = () => (int)Math.Floor(bomb.GetTime()) % 10 == 4;
+				buttonToPress = psiButton;
+				break;
+			case 501600:
+				correctTime = () => (int)Math.Floor(bomb.GetTime() % 60 / 10) == ((int)Math.Floor(bomb.GetTime() % 10));
+				buttonToPress = bashButton;
+				break;
+			case 601700:
+				correctTime = () => (int)Math.Floor(bomb.GetTime()) % 10 == (((values[usedBackgroundInt] - 1) % 9) + 1);
+				buttonToPress = runButton;
+				break;
+			case 701800:
+				correctTime = () => bomb.GetBatteryHolderCount() + 5 == (((int)Math.Floor(bomb.GetTime() % 10)) + (int)Math.Floor(bomb.GetTime() % 60 / 10));
+				buttonToPress = defendButton;
+				break;
+			case 801900:
+				correctTime = () => (int)Math.Floor(bomb.GetTime()) % 5 == 0;
+				buttonToPress = psiButton;
+				break;
+			case 901999:
+				correctTime = () => true;
+				buttonToPress = bashButton;
+				break;
+			case 00:
+				correctTime = () => ((int)Math.Floor(bomb.GetTime()) % 10) == ((Math.Abs(correctNumber) % 10));
+				buttonToPress = runButton;
+				break;
+        }
+		while (!correctTime())
+			yield return true;
+		if (buttonToPress == null) yield break;
+		buttonToPress.OnInteract();
+		yield return new WaitForSeconds(.1f);
 	}
 }
