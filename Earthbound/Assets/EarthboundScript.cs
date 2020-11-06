@@ -207,7 +207,7 @@ public class EarthboundScript : MonoBehaviour
 					Debug.LogFormat("[Earthbound #{0}] Character is from Mother 3, so the number is now {1}. ", moduleId, correctNumber);
 				} else
 				{
-					Math.Abs(correctNumber);
+					correctNumber = Math.Abs(correctNumber);
 					correctNumber *= 16;
 					Debug.LogFormat("[Earthbound #{0}] Character was from Mother 4, so the number is now {1}. ", moduleId, correctNumber);
 				}
@@ -230,7 +230,7 @@ public class EarthboundScript : MonoBehaviour
 			if ((correctNumber >= 0) && (correctNumber <= 100))
 		{
 			correctRange = 0100;
-			Debug.LogFormat("[Earthbound #{0}] (0-100) Solution is to use PSI at XX:X{1}. ", moduleId, Math.Abs(bomb.GetPortCount() - (bomb.GetOnIndicators().Count() + bomb.GetOffIndicators().Count()) * bomb.GetBatteryCount()) % 10);
+			Debug.LogFormat("[Earthbound #{0}] (0-100) Solution is to use PSI at XX:X{1}. ", moduleId, ((bomb.GetPortCount() - (bomb.GetIndicators().Count())) * bomb.GetBatteryCount()) + 1000) % 10));
 		}
 			else if ((correctNumber >= 101) && (correctNumber <= 200))
 		{
@@ -348,7 +348,7 @@ public class EarthboundScript : MonoBehaviour
 		psiButton.AddInteractionPunch();
 		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
 
-		if ((correctRange == 0100) && (((int)Math.Floor(bomb.GetTime()) % 10) == (Math.Abs(bomb.GetPortCount() - (bomb.GetOnIndicators().Count() + bomb.GetOffIndicators().Count()) * bomb.GetBatteryCount()) % 10)))
+		if ((correctRange == 0100) && (((int)Math.Floor(bomb.GetTime()) % 10) == (((bomb.GetPortCount() - (bomb.GetIndicators().Count())) * bomb.GetBatteryCount()) + 1000) % 10))
 		{
 			if (moduleSolved == false)
 			{
