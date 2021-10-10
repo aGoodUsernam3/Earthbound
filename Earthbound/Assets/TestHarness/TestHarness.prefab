@@ -20161,6 +20161,8 @@ MonoBehaviour:
   AudioClips:
   - {fileID: 8300000, guid: 1cee9214f797c8e45a1e38daf5943903, type: 3}
   - {fileID: 8300000, guid: 583c06faaee164fa9b814767d1cf73b7, type: 3}
+  - {fileID: 8300000, guid: 65c08795a63cc48fd86d5ccc96bfdfbb, type: 3}
+  - {fileID: 8300000, guid: d0023cba071de46fbbcda6fd959c1ab7, type: 3}
   StrikeCount: 3
   TimeLimit: 600
   BombSize: 1
