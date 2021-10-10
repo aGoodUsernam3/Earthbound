@@ -57,8 +57,6 @@ public class EarthboundScript : MonoBehaviour
 					psiButton.OnInteract += delegate () { PresspsiButton(); return false; };
 					defendButton.OnInteract += delegate () { PressdefendButton(); return false; };
 					runButton.OnInteract += delegate () { PressrunButton(); return false; };
-					bomb.OnBombExploded += delegate () { playSound = false; };
-					bomb.OnBombSolved += delegate () { playSound = false; };
 	}
 
 	void FunnySound()
@@ -84,6 +82,10 @@ public class EarthboundScript : MonoBehaviour
 					Submission();
 		  //}
 	}
+	private void OnDestroy()
+    {
+		playSound = false;
+    }
 	private void Update()
     {
 		background.material.mainTextureOffset += Time.deltaTime * Vector2.one;
@@ -305,9 +307,7 @@ public class EarthboundScript : MonoBehaviour
 				Debug.LogFormat("[Earthbound #{0}] You tried to Bash at {1}. ", moduleId, (bomb.GetFormattedTime()));
 				Debug.LogFormat("[Earthbound #{0}] {1} HP of damage to the {2}! ", moduleId, (values[usedBackgroundInt] * 8), enemyOptions[enemyIndex].name);
 				Debug.LogFormat("[Earthbound #{0}] The {1} disappeared! Module solved. ", moduleId, enemyOptions[enemyIndex].name);
-				module.HandlePass();
 				StartCoroutine(EnemyKill());
-				audio.PlaySoundAtTransform("Solved", transform);
 				moduleSolved = true;
 			}
 		}
@@ -318,9 +318,7 @@ public class EarthboundScript : MonoBehaviour
 					Debug.LogFormat("[Earthbound #{0}] You tried to Bash at {1}. ", moduleId, (bomb.GetFormattedTime()));
 					Debug.LogFormat("[Earthbound #{0}] {1} HP of damage to the {2}! ", moduleId, (values[usedBackgroundInt] * 8), enemyOptions[enemyIndex].name);
 					Debug.LogFormat("[Earthbound #{0}] The {1} disappeared! Module solved. ", moduleId, enemyOptions[enemyIndex].name);
-					module.HandlePass();
 				StartCoroutine(EnemyKill());
-				audio.PlaySoundAtTransform("Solved", transform);
 					moduleSolved = true;
 				}
 			}
@@ -332,9 +330,7 @@ public class EarthboundScript : MonoBehaviour
 						Debug.LogFormat("[Earthbound #{0}] You tried to Bash at {1}. ", moduleId, (bomb.GetFormattedTime()));
 						Debug.LogFormat("[Earthbound #{0}] {1} HP of damage to the {2}! ", moduleId, (values[usedBackgroundInt] * 8), enemyOptions[enemyIndex].name);
 						Debug.LogFormat("[Earthbound #{0}] The {1} disappeared! Module solved. ", moduleId, enemyOptions[enemyIndex].name);
-						module.HandlePass();
 						StartCoroutine(EnemyKill());
-						audio.PlaySoundAtTransform("Solved", transform);
 						moduleSolved = true;
 					}
 				}
@@ -364,9 +360,7 @@ public class EarthboundScript : MonoBehaviour
 				Debug.LogFormat("[Earthbound #{0}] You tried to use PSI at {1}. ", moduleId, (bomb.GetFormattedTime()));
 				Debug.LogFormat("[Earthbound #{0}] {1} HP of damage to the {2}! ", moduleId, (values[usedBackgroundInt] * 8), enemyOptions[enemyIndex].name);
 				Debug.LogFormat("[Earthbound #{0}] The {1} disappeared! Module solved. ", moduleId, enemyOptions[enemyIndex].name);
-				module.HandlePass();
 				StartCoroutine(EnemyKill());
-				audio.PlaySoundAtTransform("Solved", transform);
 				moduleSolved = true;
 			}
 		}
@@ -378,9 +372,7 @@ public class EarthboundScript : MonoBehaviour
 						Debug.LogFormat("[Earthbound #{0}] You tried to use PSI at {1}. ", moduleId, (bomb.GetFormattedTime()));
 						Debug.LogFormat("[Earthbound #{0}] {1} HP of damage to the {2}! ", moduleId, (values[usedBackgroundInt] * 8), enemyOptions[enemyIndex].name);
 						Debug.LogFormat("[Earthbound #{0}] The {1} disappeared! Module solved. ", moduleId, enemyOptions[enemyIndex].name);
-						module.HandlePass();
 						StartCoroutine(EnemyKill());
-						audio.PlaySoundAtTransform("Solved", transform);
 						moduleSolved = true;
 					}
 				}
@@ -392,9 +384,7 @@ public class EarthboundScript : MonoBehaviour
 								Debug.LogFormat("[Earthbound #{0}] You tried to use PSI at {1}. ", moduleId, (bomb.GetFormattedTime()));
 								Debug.LogFormat("[Earthbound #{0}] {1} HP of damage to the {2}! ", moduleId, (values[usedBackgroundInt] * 8), enemyOptions[enemyIndex].name);
 								Debug.LogFormat("[Earthbound #{0}] The {1} disappeared! Module solved. ", moduleId, enemyOptions[enemyIndex].name);
-								module.HandlePass();
 								StartCoroutine(EnemyKill());
-								audio.PlaySoundAtTransform("Solved", transform);
 								moduleSolved = true;
 							}
 						}
@@ -427,7 +417,7 @@ public class EarthboundScript : MonoBehaviour
 				Debug.LogFormat("[Earthbound #{0}] {1} attacks for fatal damage! ", moduleId, enemyOptions[enemyIndex].name);
 				Debug.LogFormat("[Earthbound #{0}] You defended the attack, module solved. ", moduleId);
 				module.HandlePass();
-				StartCoroutine(Fade());
+				StartCoroutine(FadeBG());
 				audio.PlaySoundAtTransform("Solved", transform);
 				moduleSolved = true;
 			}
@@ -453,7 +443,7 @@ public class EarthboundScript : MonoBehaviour
 							Debug.LogFormat("[Earthbound #{0}] {1} attacks for fatal damage! ", moduleId, enemyOptions[enemyIndex].name);
 							Debug.LogFormat("[Earthbound #{0}] You defended the attack, module solved. ", moduleId);
 							module.HandlePass();
-				StartCoroutine(Fade());
+				StartCoroutine(FadeBG());
 				audio.PlaySoundAtTransform("Solved", transform);
 							moduleSolved = true;
 						}
@@ -484,7 +474,7 @@ public class EarthboundScript : MonoBehaviour
 			Debug.LogFormat("[Earthbound #{0}] You tried to Run at {1}. ", moduleId, (bomb.GetFormattedTime()));
 			Debug.LogFormat("[Earthbound #{0}] You escaped, module solved. ", moduleId);
 			module.HandlePass();
-				StartCoroutine(Fade());
+				StartCoroutine(FadeBG());
 				audio.PlaySoundAtTransform("Solved", transform);
 			moduleSolved = true;
 			}
@@ -496,7 +486,7 @@ public class EarthboundScript : MonoBehaviour
 				Debug.LogFormat("[Earthbound #{0}] You tried to Run at {1}. ", moduleId, (bomb.GetFormattedTime()));
 				Debug.LogFormat("[Earthbound #{0}] You escaped, module solved. ", moduleId);
 				module.HandlePass();
-				StartCoroutine(Fade());
+				StartCoroutine(FadeBG());
 				audio.PlaySoundAtTransform("Solved", transform);
 				moduleSolved = true;
 				}
@@ -509,7 +499,7 @@ public class EarthboundScript : MonoBehaviour
 						Debug.LogFormat("[Earthbound #{0}] You tried to Run at {1}. ", moduleId, (bomb.GetFormattedTime()));
 						Debug.LogFormat("[Earthbound #{0}] You escaped, module solved. ", moduleId);
 						module.HandlePass();
-				StartCoroutine(Fade());
+				StartCoroutine(FadeBG());
 				audio.PlaySoundAtTransform("Solved", transform);
 						moduleSolved = true;
 					}
@@ -530,7 +520,7 @@ public class EarthboundScript : MonoBehaviour
 	}
 
 	//Solve Anims
-	IEnumerator Fade()
+	IEnumerator FadeBG(bool solve = true)
     {
 		yield return new WaitForSeconds(0.5f);
 		float delta = 0;
@@ -541,30 +531,42 @@ public class EarthboundScript : MonoBehaviour
 			enemy.color = Color.Lerp(Color.white, Color.black, delta);
 			yield return null;
         }
-		module.HandlePass();
+		if (solve)
+			module.HandlePass();
     }
 	IEnumerator EnemyKill()
     {
+		audio.PlaySoundAtTransform("hit", transform);
         for (int i = 0; i < 3; i++)
         {
-			enemy.gameObject.SetActive(false);
+			enemy.enabled = false;
 			yield return new WaitForSeconds(0.05f);
-			enemy.gameObject.SetActive(true);
+			enemy.enabled = true;
 			yield return new WaitForSeconds(0.05f);
 		}
 		yield return new WaitForSeconds(1);
+		StartCoroutine(FadeBG(false));
+		yield return FadeEnemy(Color.white, 0.25f);
+		yield return FadeEnemy(Color.black, 0.25f);
+		yield return new WaitForSeconds(0.05f);
+		enemy.enabled = false;
+		audio.PlaySoundAtTransform("Solved", transform);
+		module.HandlePass();
+    }
+	IEnumerator FadeEnemy(Color targetColor, float time)
+    {
 		Color[] pixels = enemy.sprite.texture.GetPixels();
 		float delta = 0;
-        while (delta < 1)
-        {
-			delta += 4 * Time.deltaTime;
+		while (delta < 1)
+		{
+			delta += 1f/time * Time.deltaTime;
 			yield return null;
-			Color[] newPixels = pixels.Select(x => x != Color.clear &&  ? Color.Lerp(x, Color.white, delta) : Color.clear).ToArray();
+			Color[] newPixels = pixels.Select(x => x.a >= 0.8f ? Color.Lerp(x, targetColor, delta) : x).ToArray();
 			Texture2D newTxt = new Texture2D(enemy.sprite.texture.width, enemy.sprite.texture.height) { wrapMode = TextureWrapMode.Clamp };
 			newTxt.SetPixels(newPixels);
-			enemy.sprite = Sprite.Create(newTxt, new Rect(0, 0, newTxt.width, newTxt.height), new Vector2(0.33f,0.33f));
-        }
-    }
+			enemy.sprite = Sprite.Create(newTxt, enemy.sprite.rect, new Vector3(0.5f, 0.5f));
+		}
+	}
 	
 	//twitch plays
     #pragma warning disable 414

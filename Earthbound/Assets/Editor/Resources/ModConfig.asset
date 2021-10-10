@@ -34,6 +34,6 @@ MonoBehaviour:
     Special shoutouts to Blananas2, TasThing, Deaf, and eXish for helping me through
     the production and coding process for this module, this wouldn''t be on the workshop
     without them :)'
-  version: 1.0
+  version: 2.0.0
   outputFolder: build
-  previewImage: {fileID: 2800000, guid: 00d105f61ea384c63a8d5c324a20ea0f, type: 3}
+  previewImage: {fileID: 2800000, guid: 5636def64f71fad42bf1e3d069f47089, type: 3}

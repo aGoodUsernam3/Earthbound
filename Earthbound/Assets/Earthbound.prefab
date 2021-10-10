@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4129657835564232}
   - component: {fileID: 212849742198952682}
+  - component: {fileID: 114567150463941028}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -70,6 +71,7 @@ GameObject:
   - component: {fileID: 4141416173057106}
   - component: {fileID: 33117029099319820}
   - component: {fileID: 23315342016435956}
+  - component: {fileID: 114659424488497400}
   m_Layer: 0
   m_Name: CornerFrame
   m_TagString: Untagged
@@ -88,6 +90,7 @@ GameObject:
   - component: {fileID: 33912039824217336}
   - component: {fileID: 64963557982597856}
   - component: {fileID: 23777869589354706}
+  - component: {fileID: 114141843552230634}
   m_Layer: 0
   m_Name: ButtonsBG
   m_TagString: Untagged
@@ -231,6 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4819204408929002}
   - component: {fileID: 212804556174006362}
+  - component: {fileID: 114542266247239866}
   m_Layer: 0
   m_Name: ChSprite
   m_TagString: Untagged
@@ -248,6 +252,7 @@ GameObject:
   - component: {fileID: 4143496874593706}
   - component: {fileID: 33740254603006522}
   - component: {fileID: 23642203280403672}
+  - component: {fileID: 114589192828862146}
   m_Layer: 0
   m_Name: CornerFrame
   m_TagString: Untagged
@@ -334,6 +339,7 @@ GameObject:
   - component: {fileID: 33261664562328144}
   - component: {fileID: 64418127083084994}
   - component: {fileID: 23785786841436244}
+  - component: {fileID: 114680696588632928}
   m_Layer: 0
   m_Name: ChBG
   m_TagString: Untagged
@@ -571,7 +577,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1640251604762044}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.568, y: 0.141, z: -0.285}
+  m_LocalPosition: {x: -0.568, y: 0.145, z: -0.285}
   m_LocalScale: {x: 0.35, y: 0.65, z: 1}
   m_Children: []
   m_Father: {fileID: 4703181831014490}
@@ -716,8 +722,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1448902598949542}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.562, y: 0.145, z: -0.268}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalPosition: {x: -0.562, y: 0.146, z: -0.268}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 4703181831014490}
   m_RootOrder: 0
@@ -1597,6 +1603,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - GUI/KT 3D Text
+--- !u!114 &114141843552230634
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1129557353532552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - KT/Blend Unlit
 --- !u!114 &114212481856678634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1645,7 +1664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Standard
+  - KT/Mobile/DiffuseTint
 --- !u!114 &114246420285092722
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1671,7 +1690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/DiffuseTint
+  - KT/Blend Unlit
 --- !u!114 &114264821957715864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1695,7 +1714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Standard
+  - KT/Mobile/DiffuseTint
 --- !u!114 &114361494538909652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1796,6 +1815,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighlightScale: {x: 1, y: 1, z: 1}
   OutlineAmount: 0
+--- !u!114 &114542266247239866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1448902598949542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - Sprites/Default
 --- !u!114 &114561572382258454
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1828,22 +1860,22 @@ MonoBehaviour:
   defendButton: {fileID: 114212481856678634}
   runButton: {fileID: 114665745355084982}
   characterOptions:
-  - {fileID: 21300000, guid: 7ce073cba461c4b6b92946665efde63f, type: 3}
-  - {fileID: 21300000, guid: 80a70910afbc24eafbcf9a4db3bbb84a, type: 3}
-  - {fileID: 21300000, guid: b584deb293e5e4435839a6525cecc7b8, type: 3}
-  - {fileID: 21300000, guid: 57db06813893544a4ae9994c31fa446d, type: 3}
-  - {fileID: 21300000, guid: 93e06e6c36d4c4a3391e1de62c5eb588, type: 3}
-  - {fileID: 21300000, guid: 9bfb9339f5f694690900c4b30d77ada7, type: 3}
-  - {fileID: 21300000, guid: 6795ec5f684464a93b4645c3260094b1, type: 3}
-  - {fileID: 21300000, guid: 7a80f0704c82f40bf9d3434429ead636, type: 3}
-  - {fileID: 21300000, guid: e1805a84e9e104ea2ba9e414bf2ba0b2, type: 3}
-  - {fileID: 21300000, guid: 9fdd46bbbf15542ef84f5cd9c50ede32, type: 3}
-  - {fileID: 21300000, guid: 4db525970017e4879ba766387d82f438, type: 3}
-  - {fileID: 21300000, guid: 2f8e227c910254ceba9df9968538f495, type: 3}
-  - {fileID: 21300000, guid: 70d1cbfa7cdb142eea750207709189aa, type: 3}
-  - {fileID: 21300000, guid: 780b15cdb1de545c5a4b02d9bbe6fa93, type: 3}
-  - {fileID: 21300000, guid: 43f31c6ef43704758a2011af51486538, type: 3}
-  - {fileID: 21300000, guid: a98a9c91008bc46ddb10d35f448b2f8c, type: 3}
+  - {fileID: 21300000, guid: 3dd7bef93545add4592bf5252448b40c, type: 3}
+  - {fileID: 21300000, guid: 896db65baa793d648947dfcbce7a0631, type: 3}
+  - {fileID: 21300000, guid: 61984ada1de27f840a1dfb73dac7cfec, type: 3}
+  - {fileID: 21300000, guid: ae099f9ac315f3b4a837984dcd5f5aa6, type: 3}
+  - {fileID: 21300000, guid: e50cb538c7ab2f54fb6380808cf6c50a, type: 3}
+  - {fileID: 21300000, guid: 2fde3d176f48ea849b255e59f08da071, type: 3}
+  - {fileID: 21300000, guid: fb98964050f863245bfafa5ff098a129, type: 3}
+  - {fileID: 21300000, guid: 9176495b8970f20449da75f5f69c90a7, type: 3}
+  - {fileID: 21300000, guid: 2e7b64afe78442c439eac4ae74ada78f, type: 3}
+  - {fileID: 21300000, guid: aab1ac9e30512744d8227b6e7467d22e, type: 3}
+  - {fileID: 21300000, guid: b33551cb9d9efbc4b994147b39fc91b2, type: 3}
+  - {fileID: 21300000, guid: 115ffb7285d48cf48b5bb356357207ee, type: 3}
+  - {fileID: 21300000, guid: fb439b5a9ba3e184abe3658bab022a80, type: 3}
+  - {fileID: 21300000, guid: ebbe76443f30b404ba60f8a634100455, type: 3}
+  - {fileID: 21300000, guid: 5e1648ff0f8a9934698f18e9b56cbfe8, type: 3}
+  - {fileID: 21300000, guid: e3cea7d2ff4fc2740bbbfcd98f12e297, type: 3}
   character: {fileID: 212804556174006362}
   enemyOptions:
   - {fileID: 21300000, guid: 7554e8efed42423409a9a30640f11bd8, type: 3}
@@ -1909,6 +1941,32 @@ MonoBehaviour:
   - {fileID: 2100000, guid: b5adac86eaeaa4d5a83e31b94f1df143, type: 2}
   - {fileID: 2100000, guid: f40fff8b2859b4d51a9bb6b05f023223, type: 2}
   background: {fileID: 23004427528296130}
+--- !u!114 &114567150463941028
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1014153833525336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - Sprites/Default
+--- !u!114 &114589192828862146
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1470886851948156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - Unlit/Color
 --- !u!114 &114595976099466040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1935,6 +1993,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - GUI/KT 3D Text
+--- !u!114 &114659424488497400
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1124693176490784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - Unlit/Color
 --- !u!114 &114665745355084982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1958,6 +2029,19 @@ MonoBehaviour:
   AllowSelectionWrapY: 0
   ForceSelectionHighlight: 0
   ForceInteractionHighlight: 0
+--- !u!114 &114680696588632928
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1640251604762044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - KT/Blend Unlit
 --- !u!114 &114808574761313038
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1970,7 +2054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Standard
+  - KT/Mobile/DiffuseTint
 --- !u!114 &114813345323910226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2006,7 +2090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Standard
+  - KT/Mobile/DiffuseTint
 --- !u!114 &114954892597221416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2065,12 +2149,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 4db525970017e4879ba766387d82f438, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ae099f9ac315f3b4a837984dcd5f5aa6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.56, y: 0.55}
+  m_Size: {x: 1.28, y: 1.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2109,7 +2193,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: d41f7839aa686f4448f643051dafff53, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eec9de63e4ac9d04f8103b4ea96e2d1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
