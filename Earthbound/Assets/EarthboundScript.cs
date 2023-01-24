@@ -134,7 +134,7 @@ public class EarthboundScript : MonoBehaviour
 			case 1:
 				StartingNumber = values[usedBackgroundInt] + bomb.GetBatteryCount();
 				correctNumber = StartingNumber;
-				if (((characterIndex == 3) || (characterIndex == 6) || (characterIndex == 9) || (characterIndex == 15)) && (bomb.GetSerialNumber().Any(ch => "DIT04".Contains(ch))))
+				if (((characterIndex == 12) || (characterIndex == 13) || (characterIndex == 14) || (characterIndex == 15)) && (bomb.GetSerialNumber().Any(ch => "DIT04".Contains(ch))))
 				{
 					correctNumber += 15;
 					Debug.LogFormat("[Earthbound #{0}] Step 1 applies, so the number is now {1}. ", moduleId, correctNumber);
@@ -170,11 +170,11 @@ public class EarthboundScript : MonoBehaviour
 
 				break;
 			case 5:
-				if ((enemyIndex == 26) || (enemyIndex == 27) || (enemyIndex == 28) || (enemyIndex == 16) || (enemyIndex == 21) || (enemyIndex == 17) || (enemyIndex == 1) || (enemyIndex == 2) || (enemyIndex == 3) || (enemyIndex == 5))
+				if ((enemyIndex == 0) || (enemyIndex == 1) || (enemyIndex == 2) || (enemyIndex == 3) || (enemyIndex == 4) || (enemyIndex == 5) || (enemyIndex == 6) || (enemyIndex == 7) || (enemyIndex == 8) || (enemyIndex == 9))
 				{
 					correctNumber += 35;
 					Debug.LogFormat("[Earthbound #{0}] Enemy was from Mother 1, so the number is now {1}. ", moduleId, correctNumber);
-				} else if ((enemyIndex == 19) || (enemyIndex == 4) || (enemyIndex == 8) || (enemyIndex == 7) || (enemyIndex == 10) || (enemyIndex == 29) || (enemyIndex == 13) || (enemyIndex == 12) || (enemyIndex == 15) || (enemyIndex == 22))
+				} else if ((enemyIndex == 10) || (enemyIndex == 11) || (enemyIndex == 12) || (enemyIndex == 13) || (enemyIndex == 14) || (enemyIndex == 15) || (enemyIndex == 16) || (enemyIndex == 17) || (enemyIndex == 18) || (enemyIndex == 19))
 					{
 					correctNumber -= bomb.GetPortCount();
 					Debug.LogFormat("[Earthbound #{0}] Enemy was from Mother 2, so the number is now {1}. ", moduleId, correctNumber);
@@ -201,15 +201,15 @@ public class EarthboundScript : MonoBehaviour
 
 				break;
 			case 8:
-				if ((characterIndex == 14) || (characterIndex == 11) || (characterIndex ==  7) || (characterIndex == 0))
+				if ((characterIndex == 0) || (characterIndex == 1) || (characterIndex ==  2) || (characterIndex == 3))
 				{
 					correctNumber += 89;
 					Debug.LogFormat("[Earthbound #{0}] Character is from Mother 1, so the number is now {1}. ", moduleId, correctNumber);
-				}	else if ((characterIndex == 10) || (characterIndex == 12) || (characterIndex == 13) || (characterIndex == 4))
+				}	else if ((characterIndex == 4) || (characterIndex == 5) || (characterIndex == 6) || (characterIndex == 7))
 				{
 					correctNumber -= 94;
 					Debug.LogFormat("[Earthbound #{0}] Character is from Mother 2, so the number is now {1}. ", moduleId, correctNumber);
-				} else if ((characterIndex == 8) || (characterIndex == 5) || (characterIndex == 2) || (characterIndex == 1))
+				} else if ((characterIndex == 8) || (characterIndex == 9) || (characterIndex == 10) || (characterIndex == 11))
 				{
 					correctNumber *= 6;
 					Debug.LogFormat("[Earthbound #{0}] Character is from Mother 3, so the number is now {1}. ", moduleId, correctNumber);
