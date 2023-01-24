@@ -641,7 +641,7 @@ public class EarthboundScript : MonoBehaviour
 		switch (correctRange)
         {
 			case 0100:
-				correctTime = () => ((int)Math.Floor(bomb.GetTime()) % 10) == (Math.Abs(bomb.GetPortCount() - (bomb.GetOnIndicators().Count() + bomb.GetOffIndicators().Count()) * bomb.GetBatteryCount()) % 10);
+				correctTime = () => (((int)Math.Floor(bomb.GetTime()) % 10) == (((bomb.GetPortCount() - (bomb.GetIndicators().Count())) * bomb.GetBatteryCount()) + 1000) % 10);
 				buttonToPress = psiButton;
 				break;
 			case 101200:
